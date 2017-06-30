@@ -4,7 +4,7 @@ import beeActions from './utils/Constants'
 const BEEJS_URL = 'https://app-rsrc.getbee.io/plugin/BeePlugin.js'
 const API_AUTH_URL = 'https://auth.getbee.io/apiauth'
 
-const load = (bee) => {
+const load = bee => {
   loadScript(BEEJS_URL, err => {
     if (err) {
       throw new Error('BeePlugin.js is not reachable')
@@ -26,11 +26,18 @@ const isValidAction = action => {
   }
 }
 
-const { LOAD, SAVE, SEND, PREVIEW, SAVE_AS_TEMPLATE, TOGGLE_STRUCTURE } = beeActions
+const {
+  LOAD,
+  SAVE,
+  SEND,
+  PREVIEW,
+  SAVE_AS_TEMPLATE,
+  TOGGLE_STRUCTURE,
+} = beeActions
 
 export default class Bee {
   constructor(token) {
-    this.bee = (call) => load(() => call())
+    this.bee = call => load(() => call())
     this.token = token || null
     this.config = null
     this.instance = null
@@ -49,11 +56,11 @@ export default class Bee {
       throw new Error('Toker already declared')
     }
     return fetch(new Request(API_AUTH_URL, config))
-    .then(res => res.json())
-    .then(token => {
-      this.token = token
-      return token
-    })
+      .then(res => res.json())
+      .then(token => {
+        this.token = token
+        return token
+      })
   }
 
   start(config, template) {
@@ -62,14 +69,19 @@ export default class Bee {
       throw new Error('Config or template are missing')
     }
     if (!this.token) {
-      throw new Error('Token NOT declared, call getToken or pass token on new BEE')
+      throw new Error(
+        'Token NOT declared, call getToken or pass token on new BEE'
+      )
     }
-    return bee(() =>
-      BeePlugin.create(token, config, instance => {
-        this.instance = instance
-        return instance.start(template)
-      })
-    )
+    return new Promise(resolve => {
+      bee(() =>
+        BeePlugin.create(token, config, instance => {
+          this.instance = instance
+          instance.start(template)
+          resolve(instance)
+        })
+      )
+    })
   }
 
   executeAction(action, param) {
