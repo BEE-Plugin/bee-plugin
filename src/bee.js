@@ -64,12 +64,15 @@ export default class Bee {
     if (!this.token) {
       throw new Error('Token NOT declared, call getToken or pass token on new BEE')
     }
-    return bee(() =>
-      BeePlugin.create(token, config, instance => {
-        this.instance = instance
-        return instance.start(template)
-      })
-    )
+    return new Promise(resolve => {
+      bee(() =>
+        BeePlugin.create(token, config, instance => {
+          this.instance = instance
+          instance.start(template)
+          resolve(instance)
+        })
+      )
+    })
   }
 
   executeAction(action, param) {
