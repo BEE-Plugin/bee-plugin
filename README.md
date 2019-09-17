@@ -1,7 +1,12 @@
+# Warning: this project as been deprecated
+
+Please use the official [BEE plugin wrapper](https://github.com/BEE-Plugin/Bee-plugin-official)
+
+
 # BEE plugin wrapper [![Build Status](https://travis-ci.org/samuv/bee-plugin.svg?branch=master)](https://travis-ci.org/samuv/bee-plugin.svg?branch=master)
 A simple module to use the [BEE editor](http://beefree.io)
 
-## What the hell is BEE?
+## What is BEE?
 Long story short: it's a drag-&-drop editor to author responsive design emails.
 It makes it easy and quick to create a great-looking email message that can be used to send a company newsletter, announce a new product, promote a sale, etc.
 
