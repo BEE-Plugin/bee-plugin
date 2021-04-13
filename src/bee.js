@@ -66,11 +66,18 @@ export default class Bee {
     }
     return new Promise(resolve => {
       bee(() =>
-        BeePlugin.create(token, config, instance => {
-          this.instance = instance
-          instance.start(template)
-          resolve(instance)
-        })
+        BeePlugin.create(
+          token,
+          {
+            ...config,
+            startOrigin: '[npm] bee-plugin-deprecated',
+          },
+          instance => {
+            this.instance = instance
+            instance.start(template)
+            resolve(instance)
+          }
+        )
       )
     })
   }
